@@ -9,7 +9,7 @@ function preload(){
   groundImg=loadImage("ground2.png")
   bg=loadImage("bg.png")
   finalbg=loadImage("bg1.png")
-
+  obstacleImg=loadAnimation("obstacle1.png","obstacle2.png","obstacle3.png","obstacle4.png")
   enemyImg=loadImage("enemy.png")
   brickImg=loadImage("brick.png")
   coinImg=loadImage("coin.png")
@@ -28,7 +28,7 @@ function setup(){
    // camera.position.x=0
  // brick1=createSprite()
  text(distance,200,200)
-
+ obstacleGroup=createGroup()
   enemyGroup=createGroup()
   enemyKillGroup=createGroup()
   for(var i=0;i<width*8;i=i+500){
@@ -72,7 +72,7 @@ debugger;
     
     enemyGroup.destroyEach()
   }
-  if(enemyGroup.isTouching(mario))
+  if(enemyGroup.isTouching(mario)||obstacleGroup.isTouching(mario)){
     mario.visible=false
   }
   if(mario.y===brick1.y&&mario.x===brick1.x){
@@ -92,7 +92,7 @@ debugger;
   text("Coins: "+totalCoins,camera.position.x-180,10)
   //console.log(mouseY)
   spawnEnemies()
-  
+  spawnObstacle()
 }
 function spawnEnemies(){
   if(frameCount%Math.round(random(400,600))===0){
@@ -109,5 +109,16 @@ function spawnEnemies(){
   enemyGroup.add(enemy)
   enemyKillGroup.add(enemyKill)
 
+  }
+}
+function spawnObstacle(){
+  if(frameCount%Math.round(random(400,600))===0){
+    obstacle=createSprite(width,height-155,20,10)
+    obstacle.addAnimation("plant",obstacleImg)
+    obstacle.scale=0.75
+  obstacle.setCollider("rectangle",-10,-50,100,100)
+  obstacle.lifetime=width
+  obstacleGroup.add(obstacle)
+  
   }
 }
